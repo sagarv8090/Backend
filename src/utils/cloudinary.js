@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
-import {fs} from 'fs';
+import fs from 'fs';
 
     // Configuration
     cloudinary.config({ 
@@ -14,11 +14,12 @@ import {fs} from 'fs';
             if (!localFilePath) {
                 throw new Error('File path is required for upload');
             }
-            const result = await cloudinary.uploader.upload(localFilePath, {
+            const response = await cloudinary.uploader.upload(localFilePath, {
                 resource_type: 'auto' // Automatically determine the resource type (image, video, etc.)
             });
+            console.log('Upload successful:', response);
             fs.unlinkSync(localFilePath); // Delete the file after upload
-            return result; 
+            return response; 
         } catch (error) {
             fs.unlinkSync(localFilePath); // Ensure the file is deleted even if upload fails
             console.error('Error uploading to Cloudinary:', error);
